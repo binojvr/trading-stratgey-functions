@@ -5,7 +5,7 @@ class ExchangeConnectionError(Exception):
     """Custom error that is raised when an exchange is not connected."""
 
 
-class Exchange:
+class StockExchange:
     def __init__(self) -> None:
         self.connected = False
 

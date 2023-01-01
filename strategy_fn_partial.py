@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from functools import partial
 from typing import Callable
 
-from exchange import Exchange
+from stockexchange import StockExchange
 
 TradingStrategyFunction = Callable[[list[int]], bool]
 
@@ -39,17 +39,12 @@ def should_sell_minmax(prices: list[int], min_price: int) -> bool:
 class TradingBot:
     """Trading bot that connects to a crypto exchange and performs trades."""
 
-    exchange: Exchange
+    exchange: StockExchange
     buy_strategy: TradingStrategyFunction
     sell_strategy: TradingStrategyFunction
 
     def run(self, symbol: str) -> None:
         prices = self.exchange.get_market_data(symbol)
-        print(prices)
-        print("**********************")
-        print("********************")
-        print("***************")
-        print("***********")
         if self.buy_strategy(prices):
             self.exchange.buy(symbol, 10)
         elif self.sell_strategy(prices):
@@ -60,7 +55,7 @@ class TradingBot:
 
 def main() -> None:
     # create the exchange and connect to it
-    exchange = Exchange()
+    exchange = StockExchange()
     exchange.connect()
 
     # create the trading bot and run the bot once
