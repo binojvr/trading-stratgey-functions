@@ -11,19 +11,22 @@ from exchange import Exchange
 TradingStrategyFunction = Callable[[list[int]], bool]
 
 
-def should_buy_avg(prices: list[int], window_size: int) -> bool:
+def shall_buy_avg(prices: list[int], window_size: int) -> bool:
+    # get the list slice for windows size
     list_window = prices[-window_size:]
+    # if the current price, as reped by -1th element in array is less than mean/avg price withing window
     return prices[-1] < statistics.mean(list_window)
 
 
-def should_sell_avg(prices: list[int], window_size: int) -> bool:
+def shall_sell_avg(prices: list[int], window_size: int) -> bool:
+    # get the list slice for windows size
     list_window = prices[-window_size:]
+    # if the current price, as reped by -1th element in array is greater than mean/avg price withing window
     return prices[-1] > statistics.mean(list_window)
 
 
 def should_buy_minmax(prices: list[int], max_price: int) -> bool:
     # buy if it's below the max price
-    print(prices[-1])
     return prices[-1] < max_price
 
 
@@ -42,6 +45,11 @@ class TradingBot:
 
     def run(self, symbol: str) -> None:
         prices = self.exchange.get_market_data(symbol)
+        print(prices)
+        print("**********************")
+        print("********************")
+        print("***************")
+        print("***********")
         if self.buy_strategy(prices):
             self.exchange.buy(symbol, 10)
         elif self.sell_strategy(prices):
@@ -56,8 +64,10 @@ def main() -> None:
     exchange.connect()
 
     # create the trading bot and run the bot once
-    buy_strategy = partial(should_buy_minmax, max_price=32_000_00)
-    sell_strategy = partial(should_sell_minmax, min_price=38_000_00)
+    # buy_strategy = partial(should_buy_minmax, max_price=32_000_00)
+    # sell_strategy = partial(should_sell_minmax, min_price=38_000_00)
+    buy_strategy = partial(shall_buy_avg, window_size=10)
+    sell_strategy = partial(shall_sell_avg, window_size=10)
     bot = TradingBot(exchange, buy_strategy, sell_strategy)
     bot.run("AAPL")
 
