@@ -23,6 +23,7 @@ def should_sell_avg(prices: list[int], window_size: int) -> bool:
 
 def should_buy_minmax(prices: list[int], max_price: int) -> bool:
     # buy if it's below the max price
+    print(prices[-1])
     return prices[-1] < max_price
 
 
@@ -58,7 +59,7 @@ def main() -> None:
     buy_strategy = partial(should_buy_minmax, max_price=32_000_00)
     sell_strategy = partial(should_sell_minmax, min_price=38_000_00)
     bot = TradingBot(exchange, buy_strategy, sell_strategy)
-    bot.run("BTC/USD")
+    bot.run("AAPL")
 
 
 if __name__ == "__main__":
