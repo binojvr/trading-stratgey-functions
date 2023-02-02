@@ -1,7 +1,7 @@
 import yfinance as yf
 
 
-class ExchangeConnectionError(Exception):
+class ExchangeError(Exception):
     """Custom error that is raised when an exchange is not connected."""
 
 
@@ -17,7 +17,7 @@ class StockExchange:
     def check_connection(self) -> None:
         """Check if the exchange is connected."""
         if not self.connected:
-            raise ExchangeConnectionError()
+            raise ExchangeError()
         print("connected...")
 
     def get_market_data(self, symbol: str) -> list[int]:
